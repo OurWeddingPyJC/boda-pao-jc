@@ -164,11 +164,15 @@
     .site-nav.open{transform:translateX(0);}
     .site-nav a{font-size:var(--fs-body);}
     /* El CTA se cortaba contra el borde del panel: ahora ocupa el ancho
-       disponible, con texto centrado y tipografía algo menor para que quepa. */
+       disponible, con texto centrado y tipografía algo menor para que quepa.
+       El borde se redeclara aquí porque `.site-nav a` (0,1,1) le gana en
+       especificidad a `.nav-cta` (0,1,0) y le pintaba el borde INFERIOR de
+       transparente: el botón se veía abierto por abajo, como cortado. */
     .site-nav a.nav-cta-mobile{
       display:block; width:100%; box-sizing:border-box;
       text-align:center; margin-top:14px;
       font-size:14px; padding:12px 10px; letter-spacing:0.03em;
+      border:1px solid var(--ivory); border-radius:24px;
     }
     /* Botón de cerrar dentro del panel */
     .nav-close{
