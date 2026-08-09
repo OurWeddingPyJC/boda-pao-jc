@@ -148,11 +148,19 @@
     .nav-cta-desktop{display:none;}
     .nav-cta-mobile{display:inline-block; margin-top:8px;}
     .site-nav{
-      position:fixed; top:0; right:0; height:100vh; width:78%; max-width:320px;
+      position:fixed; top:0; right:0;
+      height:100vh; height:100svh;
+      width:78%; max-width:320px;
       background:var(--olive-dark); flex-direction:column; align-items:flex-start;
-      justify-content:center; gap:29px; padding:32px;
+      /* flex-start + márgenes "auto" en el primer y último elemento: centra el
+         bloque cuando sobra espacio, pero si el contenido no entra (pantallas
+         bajas o zoom de texto) el panel hace scroll en vez de cortar el botón. */
+      justify-content:flex-start; gap:24px; padding:76px 28px 32px;
+      overflow-y:auto; -webkit-overflow-scrolling:touch;
       transform:translateX(100%); transition:transform 0.35s ease;
     }
+    .site-nav a.nav-link:first-of-type{margin-top:auto;}
+    .site-nav a.nav-cta-mobile{margin-bottom:auto;}
     .site-nav.open{transform:translateX(0);}
     .site-nav a{font-size:var(--fs-body);}
     /* El CTA se cortaba contra el borde del panel: ahora ocupa el ancho
@@ -169,6 +177,9 @@
       color:var(--ivory); font-size:34px; line-height:1;
       width:44px; height:44px;
     }
+    /* Con el menú abierto la hamburguesa quedaba encima de la "×" (se veían
+       los dos íconos superpuestos). Se oculta mientras el panel está abierto. */
+    .site-header.nav-open .nav-toggle{opacity:0; pointer-events:none;}
     /* Capa oscura: tocar fuera del menú lo cierra */
     .nav-scrim{
       display:block; position:fixed; inset:0; z-index:190;
@@ -834,6 +845,7 @@
   function setNav(abierto){
     siteNav.classList.toggle('open', abierto);
     navScrim.classList.toggle('show', abierto);
+    header.classList.toggle('nav-open', abierto);   // oculta la hamburguesa
     navToggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
     navToggle.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
     document.body.style.overflow = abierto ? 'hidden' : '';
